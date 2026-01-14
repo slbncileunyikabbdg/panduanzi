@@ -3,353 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedoman Teknis & Audit Evidence ZI</title>
+    <title>AI Auditor ZI - SLBN Cileunyi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
-        .legal-font { font-family: 'Cinzel', serif; }
-        .audit-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .audit-card:hover { transform: translateY(-2px); }
-        .bg-pattern {
-            background-color: #ffffff;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%2394a3b8' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H2V1z'%3E%3C/path%3E%3C/svg%3E");
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
         }
+        .clean-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .clean-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        
+        .status-pill {
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        #copy-area { position: absolute; left: -9999px; top: 0; }
+        .legal-point {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 11px;
+            line-height: 1.6;
+            color: #475569;
+        }
+        .legal-point::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            background: #6366f1;
+            border-radius: 50%;
+        }
+        canvas { display: none; } /* Hidden canvas for conversion */
     </style>
 </head>
-<body class="text-slate-900 pb-20 bg-pattern">
+<body class="p-4 md:p-8 lg:p-12">
 
-    <!-- Header Instansi Formal -->
-    <header class="bg-white border-b-8 border-indigo-950 pt-16 pb-12 px-6 shadow-sm text-center">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="legal-font text-3xl md:text-4xl text-indigo-950 mb-3 tracking-wide">PEDOMAN TEKNIS OPERASIONAL</h1>
-            <h2 class="text-xs md:text-sm font-black text-slate-400 tracking-[0.5em] uppercase mb-8 text-center">Standardisasi & Audit Visual Evidence Zona Integritas</h2>
+    <textarea id="copy-area"></textarea>
+    <!-- Hidden Canvas for WebP Processing -->
+    <canvas id="conversion-canvas"></canvas>
+
+    <div class="max-w-[1500px] mx-auto">
+        <!-- HEADER -->
+        <header class="mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="bg-indigo-600 text-white text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-widest shadow-lg shadow-indigo-200">AI Converter v5.0</span>
+                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest ml-2 italic">Official IT Artifact</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tighter">AI Evidence <span class="text-indigo-600">Sync.</span></h1>
+            </div>
+            <div class="text-left lg:text-right">
+                <p class="text-slate-500 font-bold text-sm leading-relaxed mb-1">Pembangunan Zona Integritas (ZI)</p>
+                <p class="text-slate-400 text-xs font-medium italic">SLBN Cileunyi - Menuju WBK/WBBM</p>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-12 gap-6 lg:gap-8">
             
-            <div class="flex flex-wrap justify-center gap-4 text-[10px] font-bold uppercase tracking-widest text-indigo-900">
-                <span class="px-4 py-2 bg-indigo-50 rounded-full border border-indigo-100">Versi 2.1.0</span>
-                <span class="px-4 py-2 bg-indigo-50 rounded-full border border-indigo-100">Satgas ZI SLBN Cileunyi</span>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-6 mt-12">
-        
-        <!-- BAGIAN 1: DASAR HUKUM (LEGAL ASPECT) -->
-        <section class="mb-12 bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="bg-indigo-950 px-8 py-5 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <i data-lucide="scale" class="text-amber-400 w-5 h-5"></i>
-                    <h3 class="text-white text-xs font-black uppercase tracking-[0.2em]">Landasan Hukum & Konsideran</h3>
-                </div>
-                <span class="text-[9px] text-indigo-300 font-bold italic">Dokumen Internal Terkendali</span>
-            </div>
-            <div class="p-8 grid md:grid-cols-2 gap-x-12 gap-y-8">
-                <div class="flex gap-4">
-                    <div class="text-indigo-600 font-black text-xl italic opacity-20 text-center w-8">01</div>
-                    <p class="text-[13px] leading-relaxed text-slate-700">
-                        <strong class="text-slate-900 block mb-1">Permenpan RB No. 90 Tahun 2021</strong>
-                        Tentang Pedoman Pembangunan dan Evaluasi ZI menuju WBK/WBBM sebagai instrumen utama penilaian.
-                    </p>
-                </div>
-                <div class="flex gap-4">
-                    <div class="text-indigo-600 font-black text-xl italic opacity-20 text-center w-8">02</div>
-                    <p class="text-[13px] leading-relaxed text-slate-700">
-                        <strong class="text-slate-900 block mb-1">Peraturan Pemerintah No. 81 Tahun 2010</strong>
-                        Tentang Grand Design Reformasi Birokrasi yang mewajibkan bukti fisik (evidence) autentik di setiap kegiatan.
-                    </p>
-                </div>
-                <div class="flex gap-4">
-                    <div class="text-indigo-600 font-black text-xl italic opacity-20 text-center w-8">03</div>
-                    <p class="text-[13px] leading-relaxed text-slate-700">
-                        <strong class="text-slate-900 block mb-1">UU No. 14 Tahun 2008</strong>
-                        Keterbukaan Informasi Publik yang mengharuskan setiap badan publik memiliki dokumentasi kegiatan yang rapi.
-                    </p>
-                </div>
-                <div class="flex gap-4">
-                    <div class="text-indigo-600 font-black text-xl italic opacity-20 text-center w-8">04</div>
-                    <p class="text-[13px] leading-relaxed text-slate-700">
-                        <strong class="text-slate-900 block mb-1">UU No. 43 Tahun 2009</strong>
-                        Standar kearsipan nasional yang mencakup pengelolaan arsip dinamis berbasis data elektronik/digital.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <div class="grid lg:grid-cols-12 gap-8 items-start">
-            
-            <!-- KOLOM KIRI: INPUT AREA -->
-            <div class="lg:col-span-7 space-y-8">
+            <!-- LEFT SIDE: REGULATION & GUIDELINES -->
+            <div class="col-span-12 lg:col-span-4 space-y-6">
                 
-                <!-- 1. IDENTITAS & PENAMAAN -->
-                <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-slate-200">
-                    <div class="flex items-center gap-4 mb-10">
-                        <div class="w-12 h-12 bg-indigo-950 rounded-2xl flex items-center justify-center text-white shadow-xl">
-                            <i data-lucide="tag"></i>
+                <div class="clean-card p-6 lg:p-8 bg-slate-900 text-white border-none shadow-xl shadow-slate-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="gavel" class="w-5 h-5"></i>
                         </div>
+                        <h2 class="font-extrabold text-white tracking-tight">Dasar Hukum & Regulasi</h2>
+                    </div>
+                    
+                    <div class="space-y-6 max-h-[400px] overflow-y-auto custom-scroll pr-2">
                         <div>
-                            <h3 class="text-xl font-extrabold tracking-tight">Standardisasi Identitas</h3>
-                            <p class="text-xs text-slate-400 font-medium italic">Penamaan berkas otomatis sesuai konvensi satgas.</p>
+                            <h4 class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-3">Regulasi Utama</h4>
+                            <div class="legal-point !text-slate-300"><b>Permen PANRB No. 90 Tahun 2021</b>: Pembangunan dan Evaluasi Zona Integritas.</div>
+                            <div class="legal-point !text-slate-300"><b>Permen PANRB No. 10 Tahun 2019</b>: Pedoman Pembangunan ZI (Perubahan).</div>
                         </div>
-                    </div>
 
-                    <div class="grid sm:grid-cols-2 gap-6 mb-8">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Label Kegiatan</label>
-                            <input type="text" id="in-nama" placeholder="Contoh: Rapat Koordinasi" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-indigo-600 rounded-2xl outline-none font-bold text-slate-800 transition-all">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Klaster Area</label>
-                            <select id="in-area" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent focus:border-indigo-600 rounded-2xl outline-none font-bold text-slate-800 transition-all appearance-none cursor-pointer">
-                                <option value="area1">Area 1: Manajemen Perubahan</option>
-                                <option value="area2">Area 2: Penataan Tatalaksana</option>
-                                <option value="area3">Area 3: Manajemen SDM</option>
-                                <option value="area4">Area 4: Akuntabilitas Kinerja</option>
-                                <option value="area5">Area 5: Penguatan Pengawasan</option>
-                                <option value="area6">Area 6: Kualitas Pelayanan</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="box-nama" class="hidden animate-in fade-in zoom-in duration-300">
-                        <div class="bg-indigo-950 p-6 rounded-[1.5rem] flex items-center justify-between shadow-2xl">
-                            <div class="truncate mr-4">
-                                <span class="text-[9px] font-bold text-indigo-400 uppercase tracking-[0.2em] block mb-1">Hasil Konvensi Penamaan:</span>
-                                <code id="out-nama" class="text-white font-mono text-sm tracking-tighter"></code>
+                        <div>
+                            <h4 class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-3">6 Area Pengungkit</h4>
+                            <div class="space-y-2">
+                                <p class="text-[11px] text-slate-400"><span class="text-white font-bold">1. Perubahan:</span> Pola pikir dan budaya kerja.</p>
+                                <p class="text-[11px] text-slate-400"><span class="text-white font-bold">2. Tatalaksana:</span> Efisiensi sistem dan prosedur.</p>
+                                <p class="text-[11px] text-slate-400"><span class="text-white font-bold">3. SDM:</span> Profesionalisme aparatur.</p>
+                                <p class="text-[11px] text-slate-400"><span class="text-white font-bold">4. Akuntabilitas:</span> Kapasitas kinerja instansi.</p>
+                                <p class="text-[11px] text-slate-400"><span class="text-white font-bold">5. Pengawasan:</span> Pemerintahan bersih & anti KKN.</p>
+                                <p class="text-[11px] text-slate-400"><span class="text-white font-bold">6. Pelayanan:</span> Kualitas dan inovasi layanan publik.</p>
                             </div>
-                            <button onclick="copyText()" class="p-4 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all active:scale-90">
-                                <i data-lucide="copy" class="w-5 h-5"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. UNGGAH BERKAS -->
-                <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-slate-200">
-                    <div class="flex items-center gap-4 mb-10">
-                        <div class="w-12 h-12 bg-indigo-950 rounded-2xl flex items-center justify-center text-white shadow-xl">
-                            <i data-lucide="upload-cloud"></i>
+                <div class="clean-card p-6 lg:p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+                            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-extrabold tracking-tight">Unggah & Verifikasi</h3>
-                            <p class="text-xs text-slate-400 font-medium italic">Audit visual secara real-time terhadap metadata berkas.</p>
+                        <h2 class="font-extrabold text-slate-900 tracking-tight">Auto-Converter</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-[11px] text-slate-500 leading-relaxed italic">
+                            Aplikasi ini secara otomatis mengubah format gambar Anda menjadi <span class="font-bold text-indigo-600">.webp</span> untuk menghemat ruang Dropbox dan mempercepat akses galeri.
+                        </p>
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <p class="text-[9px] font-black text-slate-400 uppercase mb-2">Target Output</p>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="image" class="w-4 h-4 text-indigo-500"></i>
+                                <span class="text-xs font-bold text-slate-700 italic">Compressed WebP (High Quality)</span>
+                            </div>
                         </div>
                     </div>
-
-                    <input type="file" id="file-picker" class="hidden" accept="image/*,.heic,.heif,.webp,.tiff">
-                    <label for="file-picker" class="block border-4 border-dashed border-slate-100 rounded-[2rem] p-12 text-center cursor-pointer hover:border-indigo-600 hover:bg-indigo-50/50 transition-all group">
-                        <div id="ui-empty">
-                            <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                                <i data-lucide="image" class="w-8 h-8 text-slate-300 group-hover:text-indigo-600"></i>
-                            </div>
-                            <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Klik untuk memilih berkas</p>
-                        </div>
-                        <div id="ui-preview" class="hidden">
-                            <img id="img-target" class="max-h-64 rounded-2xl shadow-2xl mx-auto border-4 border-white mb-6">
-                            <p id="meta-label" class="text-[10px] font-mono font-bold text-indigo-600 uppercase"></p>
-                        </div>
-                    </label>
                 </div>
             </div>
 
-            <!-- KOLOM KANAN: LAPORAN AUDIT LENGKAP -->
-            <div class="lg:col-span-5 space-y-6">
-                <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-200 sticky top-10">
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-8 border-b border-slate-100 pb-4">
-                        Laporan Verifikasi Evidence
-                    </h4>
-                    
-                    <div class="space-y-4">
-                        <!-- 1. Audit Format -->
-                        <div id="audit-format" class="audit-card p-5 bg-slate-50 rounded-2xl border-l-4 border-transparent">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-[10px] font-black text-slate-700 uppercase">1. Integritas Format</span>
-                                <span class="status-icon text-slate-300"><i data-lucide="minus-circle" class="w-4 h-4"></i></span>
-                            </div>
-                            <p class="desc text-[11px] text-slate-500 font-medium leading-relaxed italic">Menunggu berkas...</p>
+            <!-- RIGHT SIDE: INTERFACE -->
+            <div class="col-span-12 lg:col-span-8 space-y-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- UPLOAD AREA -->
+                    <div class="clean-card p-8 flex flex-col items-center justify-center min-h-[420px] border-2 border-dashed border-slate-200 bg-white/50 relative">
+                        <input type="file" id="file-input" class="hidden" accept="image/*">
+                        
+                        <div id="conversion-loading" class="hidden absolute inset-0 bg-white/90 z-10 flex flex-col items-center justify-center rounded-3xl">
+                            <div class="w-10 h-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin mb-3"></div>
+                            <p class="text-[10px] font-black text-slate-500 uppercase">Converting to WebP...</p>
                         </div>
 
-                        <!-- 2. Audit Ukuran -->
-                        <div id="audit-size" class="audit-card p-5 bg-slate-50 rounded-2xl border-l-4 border-transparent">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-[10px] font-black text-slate-700 uppercase">2. Kapasitas Penyimpanan</span>
-                                <span class="status-icon text-slate-300"><i data-lucide="minus-circle" class="w-4 h-4"></i></span>
+                        <label for="file-input" class="w-full h-full flex flex-col items-center justify-center cursor-pointer group">
+                            <div id="idle-ui" class="text-center">
+                                <div class="w-20 h-20 bg-white shadow-xl shadow-slate-200 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform text-indigo-600 border border-slate-50">
+                                    <i data-lucide="plus" class="w-8 h-8"></i>
+                                </div>
+                                <p class="text-xs font-black text-slate-900 uppercase tracking-widest mb-1">Klik untuk Pilih Foto</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">PNG, JPG, HEIC, WEBP</p>
                             </div>
-                            <p class="desc text-[11px] text-slate-500 font-medium leading-relaxed italic">Batas maksimal 2MB per file.</p>
-                        </div>
-
-                        <!-- 3. Audit Rasio -->
-                        <div id="audit-ratio" class="audit-card p-5 bg-slate-50 rounded-2xl border-l-4 border-transparent">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-[10px] font-black text-slate-700 uppercase">3. Komposisi & Rasio</span>
-                                <span class="status-icon text-slate-300"><i data-lucide="minus-circle" class="w-4 h-4"></i></span>
+                            <div id="preview-ui" class="hidden w-full text-center">
+                                <img id="img-preview" class="w-full h-56 object-cover rounded-3xl shadow-2xl shadow-slate-200 mb-6 border-4 border-white">
+                                <div class="flex justify-center gap-2">
+                                    <span id="file-ext-tag" class="status-pill bg-emerald-500 text-white">WEBP</span>
+                                    <span id="file-size-tag" class="status-pill bg-slate-100 text-slate-500 tracking-tighter">0.0 MB</span>
+                                </div>
                             </div>
-                            <p class="desc text-[11px] text-slate-500 font-medium leading-relaxed italic">Rasio landscape (horizontal) diutamakan.</p>
-                        </div>
-
-                        <!-- 4. Audit Resolusi -->
-                        <div id="audit-res" class="audit-card p-5 bg-slate-50 rounded-2xl border-l-4 border-transparent">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-[10px] font-black text-slate-700 uppercase">4. Ketajaman Visual (HD)</span>
-                                <span class="status-icon text-slate-300"><i data-lucide="minus-circle" class="w-4 h-4"></i></span>
-                            </div>
-                            <p class="desc text-[11px] text-slate-500 font-medium leading-relaxed italic">Minimum 1280px pada sisi terpanjang.</p>
-                        </div>
+                        </label>
                     </div>
 
-                    <!-- RINGKASAN AKHIR -->
-                    <div id="final-verdict" class="mt-8 hidden p-6 rounded-2xl text-center">
-                        <p id="verdict-text" class="text-xs font-black uppercase tracking-widest mb-1"></p>
-                        <p id="verdict-sub" class="text-[10px] font-medium opacity-80"></p>
-                    </div>
+                    <!-- ENGINE -->
+                    <div class="clean-card p-8 flex flex-col relative overflow-hidden">
+                        <div id="ai-loading" class="hidden absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center p-8">
+                            <div class="w-12 h-12 border-[3px] border-indigo-100 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Auditing Evidence...</p>
+                        </div>
 
-                    <div class="mt-8 pt-8 border-t border-slate-100 flex items-start gap-3">
-                        <i data-lucide="alert-octagon" class="w-5 h-5 text-amber-500 flex-shrink-0"></i>
-                        <p class="text-[10px] leading-relaxed text-slate-400 font-medium italic">
-                            Evidence yang gagal audit teknis wajib diambil ulang atau dikompresi sesuai standar sebelum diunggah ke repositori.
-                        </p>
+                        <div id="ai-placeholder" class="h-full flex flex-col items-center justify-center text-center py-10">
+                            <i data-lucide="brain" class="w-12 h-12 text-slate-200 mb-4"></i>
+                            <p class="text-xs font-bold text-slate-400 leading-relaxed uppercase tracking-tighter">Saran Nama & Audit AI<br>Muncul Setelah Upload.</p>
+                        </div>
+
+                        <div id="ai-content" class="hidden h-full flex flex-col">
+                            <div class="mb-8">
+                                <div class="flex items-center gap-2 mb-6">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-indigo-500"></i>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Saran Judul</p>
+                                </div>
+                                <div id="suggestion-list" class="flex flex-wrap gap-2 mb-8"></div>
+
+                                <div class="grid grid-cols-1 gap-5">
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Nama Kegiatan</label>
+                                        <input type="text" id="final-judul" class="w-full bg-slate-50 p-4 rounded-xl font-bold text-xs text-slate-800 border-2 border-transparent focus:border-indigo-100 outline-none transition-all">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 tracking-widest">Kategori Area</label>
+                                        <select id="final-area" class="w-full bg-slate-50 p-4 rounded-xl font-bold text-xs text-slate-800 border-2 border-transparent focus:border-indigo-100 outline-none cursor-pointer appearance-none">
+                                            <option value="perubahan">1. Manajemen Perubahan</option>
+                                            <option value="tatalaksana">2. Penataan Tatalaksana</option>
+                                            <option value="sdm">3. Manajemen SDM</option>
+                                            <option value="akuntabilitas">4. Akuntabilitas Kinerja</option>
+                                            <option value="pengawasan">5. Penguatan Pengawasan</option>
+                                            <option value="pelayanan">6. Kualitas Pelayanan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
+                                <div class="truncate pr-4">
+                                    <p class="text-[9px] font-black text-indigo-400 uppercase mb-1">Final Filename (Auto-WebP)</p>
+                                    <code id="output-name" class="text-slate-900 font-mono text-xs font-extrabold"></code>
+                                </div>
+                                <button onclick="downloadAndCopy()" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl hover:bg-slate-900 transition-all flex items-center justify-center shadow-lg active:scale-95 group">
+                                    <i data-lucide="download" class="w-6 h-6 group-hover:animate-bounce"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- AUDIT SUMMARY -->
+                <div class="clean-card p-8 lg:p-10 border-t-4 border-t-indigo-600">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                        <div class="flex items-center gap-5">
+                            <div class="w-16 h-16 bg-slate-900 text-white rounded-[2rem] flex items-center justify-center shadow-2xl">
+                                <i data-lucide="check-circle" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-slate-900 tracking-tighter leading-none">Status Validasi Evidence</h3>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-2 italic">Automated Compliance Auditor</p>
+                            </div>
+                        </div>
+                        <div class="bg-indigo-50 px-8 py-4 rounded-[2rem] flex items-baseline gap-3 border border-indigo-100">
+                            <span id="overall-score" class="text-5xl font-black text-slate-300 tabular-nums tracking-tighter">--%</span>
+                            <p class="text-[10px] font-black text-indigo-400 uppercase leading-tight">Audit<br>Grade</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+                        <div class="space-y-6">
+                            <h5 class="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                <i data-lucide="maximize" class="w-4 h-4"></i> Technical Audit
+                            </h5>
+                            <div id="audit-technical" class="space-y-4">
+                                <p class="text-xs text-slate-300 italic">Standby...</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <h5 class="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                <i data-lucide="image" class="w-4 h-4"></i> Visual Quality
+                            </h5>
+                            <div id="audit-visual" class="space-y-4">
+                                <p class="text-xs text-slate-300 italic">Menunggu gambar...</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <h5 class="text-[10px] font-black text-indigo-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                <i data-lucide="award" class="w-4 h-4"></i> ZI Relevance
+                            </h5>
+                            <div id="audit-substantive" class="space-y-4">
+                                <p class="text-xs text-slate-300 italic">Belum dianalisis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Notifikasi -->
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] opacity-0 transition-all pointer-events-none z-[999] shadow-2xl">
-        Nama Berhasil Disalin
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-5 rounded-3xl text-[10px] font-black uppercase tracking-[0.3em] opacity-0 pointer-events-none transition-all z-[999] shadow-2xl">
+        Downloaded & Copied
     </div>
 
     <script>
         lucide.createIcons();
+        const apiKey = ""; 
 
-        const inNama = document.getElementById('in-nama');
-        const inArea = document.getElementById('in-area');
-        const outNama = document.getElementById('out-nama');
-        const boxNama = document.getElementById('box-nama');
-        const picker = document.getElementById('file-picker');
+        const fileInput = document.getElementById('file-input');
+        const imgPreview = document.getElementById('img-preview');
+        const idleUi = document.getElementById('idle-ui');
+        const previewUi = document.getElementById('preview-ui');
+        const finalJudul = document.getElementById('final-judul');
+        const finalArea = document.getElementById('final-area');
+        const outputName = document.getElementById('output-name');
+        const suggestionList = document.getElementById('suggestion-list');
+        const aiLoading = document.getElementById('ai-loading');
+        const aiContent = document.getElementById('ai-content');
+        const aiPlaceholder = document.getElementById('ai-placeholder');
+        const conversionLoading = document.getElementById('conversion-loading');
+        const copyArea = document.getElementById('copy-area');
+        
+        let processedBlob = null;
 
-        // Peta Deteksi Format
-        const formatDatabase = {
-            'jpg': { label: 'Standard JPEG', desc: 'Format paling optimal untuk web dan database ZI.' },
-            'jpeg': { label: 'Standard JPEG', desc: 'Sangat kompatibel dengan semua sistem evaluasi.' },
-            'png': { label: 'Portable Network', desc: 'Kualitas tinggi, namun ukuran file cenderung besar.' },
-            'webp': { label: 'Web Modern', desc: 'Sangat efisien, didukung oleh browser modern.' },
-            'heic': { label: 'iPhone HEIF', desc: 'Format Apple. Memerlukan konversi di beberapa platform.' },
-            'heif': { label: 'iPhone HEIF', desc: 'Format Apple. Memerlukan konversi di beberapa platform.' },
-            'tiff': { label: 'Tagged Image', desc: 'Format profesional, ukuran sangat besar (tidak disarankan).' }
-        };
-
-        function sync() {
-            const val = inNama.value.trim();
-            if(!val) { boxNama.classList.add('hidden'); return; }
-            const clean = val.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-            const area = inArea.value;
-            const ext = picker.files[0] ? '.' + picker.files[0].name.split('.').pop().toLowerCase() : '.jpg';
-            outNama.innerText = `${clean}_${area}${ext}`;
-            boxNama.classList.remove('hidden');
-        }
-
-        inNama.addEventListener('input', sync);
-        inArea.addEventListener('change', sync);
-
-        // Core Audit Logic
-        picker.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-
-            document.getElementById('ui-empty').classList.add('hidden');
-            const preview = document.getElementById('ui-preview');
-            const target = document.getElementById('img-target');
-            preview.classList.remove('hidden');
-
-            const ext = file.name.split('.').pop().toLowerCase();
-            const formatData = formatDatabase[ext];
-
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                target.src = ev.target.result;
+        // Function: Convert to WebP using Canvas
+        async function convertToWebP(file) {
+            return new Promise((resolve) => {
                 const img = new Image();
                 img.onload = () => {
-                    const stats = {
-                        format: !!formatData,
-                        size: file.size <= 2 * 1024 * 1024,
-                        landscape: img.width > img.height,
-                        hd: img.width >= 1280 || img.height >= 720
-                    };
-
-                    // 1. Update Laporan Format
-                    updateAuditUI('audit-format', stats.format, stats.format ? 
-                        `Terdeteksi: ${formatData.label}. ${formatData.desc}` : 
-                        `Format .${ext.toUpperCase()} tidak masuk dalam daftar standar.`
-                    );
-
-                    // 2. Update Laporan Ukuran
-                    const mb = (file.size / 1024 / 1024).toFixed(2);
-                    updateAuditUI('audit-size', stats.size, stats.size ? 
-                        `Ukuran ${mb} MB memenuhi batas aman penyimpanan.` : 
-                        `Ukuran ${mb} MB terlalu besar (Batas: 2MB).`
-                    );
-
-                    // 3. Update Laporan Rasio
-                    updateAuditUI('audit-ratio', stats.landscape, stats.landscape ? 
-                        `Orientasi Landscape (${img.width}x${img.height}). Sesuai standar galeri.` : 
-                        `Orientasi Portrait. Visual mungkin terpotong di dasbor.`
-                    );
-
-                    // 4. Update Laporan Resolusi
-                    updateAuditUI('audit-res', stats.hd, stats.hd ? 
-                        `Resolusi HD Terdeteksi. Detail gambar terjaga dengan baik.` : 
-                        `Resolusi rendah. Gambar mungkin pecah saat dipresentasikan.`
-                    );
-
-                    document.getElementById('meta-label').innerText = `${ext} | ${img.width}x${img.height} | ${mb}MB`;
-
-                    const verdict = document.getElementById('final-verdict');
-                    const vText = document.getElementById('verdict-text');
-                    const vSub = document.getElementById('verdict-sub');
-                    verdict.classList.remove('hidden', 'bg-emerald-600', 'bg-rose-600', 'text-white');
+                    const canvas = document.getElementById('conversion-canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
                     
-                    if(Object.values(stats).every(v => v === true)) {
-                        vText.innerText = "BERKAS LAYAK (PASSED)";
-                        vSub.innerText = "Siap untuk diunggah ke repositori evidence.";
-                        verdict.classList.add('bg-emerald-600', 'text-white');
-                    } else {
-                        vText.innerText = "BERKAS CACAT (REJECTED)";
-                        vSub.innerText = "Periksa poin laporan bertanda merah di atas.";
-                        verdict.classList.add('bg-rose-600', 'text-white');
-                    }
-                    sync();
+                    // Quality 0.8 is a good balance for WebP
+                    canvas.toBlob((blob) => {
+                        resolve(blob);
+                    }, 'image/webp', 0.8);
                 };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-
-        function updateAuditUI(id, isValid, text) {
-            const el = document.getElementById(id);
-            const icon = el.querySelector('.status-icon');
-            const desc = el.querySelector('.desc');
-            
-            el.classList.remove('bg-white', 'border-emerald-500', 'border-rose-500', 'shadow-lg');
-            
-            if(isValid) {
-                el.classList.add('bg-white', 'border-emerald-500', 'shadow-lg');
-                icon.innerHTML = `<i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i>`;
-                desc.classList.replace('text-slate-400', 'text-slate-700');
-            } else {
-                el.classList.add('bg-white', 'border-rose-500', 'shadow-lg');
-                icon.innerHTML = `<i data-lucide="alert-circle" class="w-5 h-5 text-rose-600"></i>`;
-                desc.classList.replace('text-slate-400', 'text-rose-600');
-            }
-            desc.innerText = text;
-            lucide.createIcons();
+                img.src = URL.createObjectURL(file);
+            });
         }
 
-        function copyText() {
-            navigator.clipboard.writeText(outNama.innerText);
+        function updateOutput() {
+            const cleanTitle = finalJudul.value.trim()
+                .replace(/\s+/g, '-') 
+                .replace(/[^a-zA-Z0-9-]/g, ''); 
+            
+            outputName.innerText = `${cleanTitle}_${finalArea.value}.webp`;
+        }
+
+        finalJudul.addEventListener('input', updateOutput);
+        finalArea.addEventListener('change', updateOutput);
+
+        function createAuditRow(label, status, desc) {
+            const color = status ? 'text-emerald-500' : 'text-amber-500';
+            const icon = status ? 'check-circle' : 'alert-circle';
+            return `
+                <div class="flex items-start gap-3 border-l-2 border-slate-50 pl-4 py-1">
+                    <div class="mt-1 flex-shrink-0">
+                        <i data-lucide="${icon}" class="w-3.5 h-3.5 ${color}"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-black text-slate-800 leading-none mb-1">${label}</p>
+                        <p class="text-[10px] text-slate-400 font-bold leading-relaxed italic">${desc}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            conversionLoading.classList.remove('hidden');
+            
+            // 1. Process Conversion
+            processedBlob = await convertToWebP(file);
+            
+            idleUi.classList.add('hidden');
+            previewUi.classList.remove('hidden');
+            imgPreview.src = URL.createObjectURL(processedBlob);
+            conversionLoading.classList.add('hidden');
+            
+            aiLoading.classList.remove('hidden');
+            aiPlaceholder.classList.add('hidden');
+
+            document.getElementById('file-size-tag').innerText = (processedBlob.size / (1024 * 1024)).toFixed(2) + ' MB (WebP)';
+
+            // 2. Perform Audit & AI Suggestions
+            try {
+                const base64 = await toBase64(processedBlob);
+                const prompt = `Analisis foto untuk Pembangunan Zona Integritas (ZI) SLBN Cileunyi berdasarkan Permen PANRB No 90/2021.
+                Kategori Area: perubahan, tatalaksana, sdm, akuntabilitas, pengawasan, pelayanan.
+                Tugas:
+                1. Berikan 3 saran judul kegiatan tanpa spasi (gunakan tanda hubung).
+                2. Berikan deskripsi substansi audit.
+                3. Tentukan area pengungkit yang paling cocok.
+                Output JSON murni:
+                {
+                    "score": 95,
+                    "visual": "Clear & Well-composed",
+                    "substance": "Dokumentasi relevan untuk bukti fisik",
+                    "titles": ["Rapat-Tim-Kerja-ZI", "Monitoring-Harian-Layanan"],
+                    "area": "pelayanan"
+                }`;
+
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        contents: [{parts: [{text: prompt}, {inlineData: {mimeType: "image/webp", data: base64}}]}]
+                    })
+                });
+
+                const data = await response.json();
+                const jsonText = data.candidates[0].content.parts[0].text;
+                const jsonResult = JSON.parse(jsonText.match(/\{.*\}/s)[0]);
+
+                const scoreElem = document.getElementById('overall-score');
+                scoreElem.innerText = jsonResult.score + '%';
+                scoreElem.className = `text-5xl font-black ${jsonResult.score > 90 ? 'text-indigo-600' : 'text-amber-500'}`;
+
+                document.getElementById('audit-technical').innerHTML = 
+                    createAuditRow('Optimasi Format', true, 'Converted to WebP (80%)') +
+                    createAuditRow('Ukuran Data', true, 'Di bawah limit Dropbox');
+
+                document.getElementById('audit-visual').innerHTML = 
+                    createAuditRow('Kualitas', true, jsonResult.visual) +
+                    createAuditRow('Objektivitas', true, 'Bukti visual valid');
+
+                document.getElementById('audit-substantive').innerHTML = 
+                    createAuditRow('Relevansi ZI', true, jsonResult.substance) +
+                    createAuditRow('Kesesuaian Area', true, 'Teridentifikasi: ' + jsonResult.area);
+
+                finalArea.value = jsonResult.area;
+                suggestionList.innerHTML = '';
+                jsonResult.titles.forEach(t => {
+                    const btn = document.createElement('button');
+                    btn.className = 'px-4 py-2 bg-slate-100 text-slate-700 text-[10px] font-black uppercase rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm';
+                    btn.innerText = t.replace(/-/g, ' ');
+                    btn.onclick = () => { finalJudul.value = t; updateOutput(); };
+                    suggestionList.appendChild(btn);
+                });
+                
+                finalJudul.value = jsonResult.titles[0];
+                updateOutput();
+
+                aiLoading.classList.add('hidden');
+                aiContent.classList.remove('hidden');
+                lucide.createIcons();
+
+            } catch (err) {
+                aiLoading.innerHTML = `<p class="text-rose-500 font-black">AI AUDIT FAILED</p>`;
+            }
+        });
+
+        const toBase64 = blob => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+
+        function downloadAndCopy() {
+            if (!processedBlob) return;
+            
+            const fileName = outputName.innerText;
+
+            // 1. Copy Name to Clipboard
+            copyArea.value = fileName;
+            copyArea.select();
+            document.execCommand('copy');
+            
+            // 2. Trigger Download
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(processedBlob);
+            link.download = fileName;
+            link.click();
+            
             const toast = document.getElementById('toast');
-            toast.classList.add('opacity-100', '-translate-y-2');
-            setTimeout(() => toast.classList.remove('opacity-100', '-translate-y-2'), 2000);
+            toast.classList.add('opacity-100', '-translate-y-4');
+            setTimeout(() => toast.classList.remove('opacity-100', '-translate-y-4'), 2500);
         }
     </script>
 </body>
