@@ -88,18 +88,6 @@
             border: 2px solid #bfdbfe;
         }
 
-        .area-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
         .timeline-item {
             position: relative;
             padding-left: 32px;
@@ -121,11 +109,110 @@
             background: #3b82f6;
             border: 3px solid white;
         }
+
+        .api-config-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .api-config-modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
     <textarea id="copy-area"></textarea>
+
+    <!-- API Configuration Modal -->
+    <div id="api-config-modal" class="api-config-modal">
+        <div class="modal-content">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <i data-lucide="key" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-slate-900">Konfigurasi API Key</h3>
+                    <p class="text-sm text-slate-600">Google AI Studio (Gemini API)</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 mb-6">
+                <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+                    <p class="text-xs font-bold text-blue-900 mb-2">📋 Langkah-langkah mendapatkan API Key:</p>
+                    <ol class="text-xs text-blue-800 space-y-2 ml-4 list-decimal">
+                        <li>Buka <a href="https://aistudio.google.com/app/apikey" target="_blank" class="underline font-bold">aistudio.google.com/app/apikey</a></li>
+                        <li>Login dengan akun Google Anda</li>
+                        <li>Klik tombol "Create API Key"</li>
+                        <li>Pilih project atau buat baru</li>
+                        <li>Copy API Key yang dihasilkan</li>
+                        <li>Paste di kolom di bawah ini</li>
+                    </ol>
+                </div>
+
+                <div>
+                    <label class="text-sm font-bold text-slate-700 mb-2 block">Masukkan API Key:</label>
+                    <input 
+                        type="text" 
+                        id="api-key-input" 
+                        placeholder="AIzaSy..." 
+                        class="w-full bg-slate-50 p-4 rounded-xl text-sm font-mono border-2 border-slate-200 focus:border-blue-400 outline-none"
+                    >
+                    <p class="text-xs text-slate-500 mt-2">API Key akan disimpan di browser Anda (localStorage)</p>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4">
+                    <p class="text-xs font-bold text-amber-900 mb-1">⚠️ Catatan Penting:</p>
+                    <ul class="text-xs text-amber-800 space-y-1 ml-4 list-disc">
+                        <li>API Key gratis dengan kuota harian</li>
+                        <li>Jangan bagikan API Key ke orang lain</li>
+                        <li>Gunakan model: gemini-2.0-flash-exp</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button 
+                    onclick="saveApiKey()" 
+                    class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-xl font-bold hover:bg-blue-700 transition-all"
+                >
+                    💾 Simpan & Gunakan
+                </button>
+                <button 
+                    onclick="closeApiModal()" 
+                    class="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-bold hover:bg-slate-200 transition-all"
+                >
+                    Tutup
+                </button>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-slate-200">
+                <p class="text-xs text-slate-600 mb-2 font-bold">Status API Key Saat Ini:</p>
+                <div id="api-status" class="bg-slate-100 rounded-lg p-3 font-mono text-xs text-slate-600">
+                    Belum dikonfigurasi
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="max-w-[1800px] mx-auto">
         <!-- ENHANCED HEADER -->
@@ -135,6 +222,10 @@
                     <div class="flex items-center gap-3 mb-4">
                         <span class="bg-blue-500 text-white text-[9px] font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg">Compliance Suite 2025</span>
                         <span class="bg-emerald-500 text-white text-[9px] font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg">AI-Powered</span>
+                        <button onclick="openApiModal()" class="bg-amber-500 text-white text-[9px] font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-lg hover:bg-amber-600 transition-all flex items-center gap-2">
+                            <i data-lucide="key" class="w-3 h-3"></i>
+                            API Config
+                        </button>
                     </div>
                     <h1 class="text-5xl font-extrabold tracking-tight mb-3">
                         ZI Evidence <span class="text-blue-400 underline decoration-blue-500/30">Auditor Pro</span>
@@ -721,7 +812,6 @@
         lucide.createIcons();
         
         // CONFIGURATION
-        const GEMINI_API_KEY = "AIzaSyBqi3inqzZPxxOFaoe614pabHPJGaoCfWA"; // Ganti dengan API key Anda
         const STORAGE_ROOT = "/root/Evidence_ZI_Cileunyi";
         
         const AREA_FOLDERS = {
@@ -732,6 +822,65 @@
             'pengawasan': '05_Penguatan_Pengawasan',
             'pelayanan': '06_Kualitas_Pelayanan_Publik'
         };
+
+        // API Key Management
+        function getApiKey() {
+            return localStorage.getItem('gemini_api_key') || '';
+        }
+
+        function setApiKey(key) {
+            localStorage.setItem('gemini_api_key', key);
+        }
+
+        function updateApiStatus() {
+            const apiKey = getApiKey();
+            const statusEl = document.getElementById('api-status');
+            if (apiKey) {
+                statusEl.innerHTML = `<span class="text-green-600">✓ Terkonfigurasi: ${apiKey.substring(0, 12)}...${apiKey.substring(apiKey.length - 4)}</span>`;
+            } else {
+                statusEl.innerHTML = `<span class="text-red-600">✗ Belum dikonfigurasi</span>`;
+            }
+        }
+
+        function openApiModal() {
+            document.getElementById('api-config-modal').classList.add('show');
+            document.getElementById('api-key-input').value = getApiKey();
+            updateApiStatus();
+            lucide.createIcons();
+        }
+
+        function closeApiModal() {
+            document.getElementById('api-config-modal').classList.remove('show');
+        }
+
+        function saveApiKey() {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            if (!apiKey) {
+                alert('⚠️ API Key tidak boleh kosong!');
+                return;
+            }
+            if (!apiKey.startsWith('AIzaSy')) {
+                alert('⚠️ Format API Key tidak valid. Harus diawali dengan "AIzaSy"');
+                return;
+            }
+            setApiKey(apiKey);
+            updateApiStatus();
+            showToast('✓ API Key berhasil disimpan!');
+            setTimeout(() => {
+                closeApiModal();
+            }, 1000);
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span').innerText = message;
+            toast.classList.add('opacity-100', '-translate-y-2');
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', '-translate-y-2');
+            }, 2500);
+        }
 
         // DOM Elements
         const fileInput = document.getElementById('file-input');
@@ -792,6 +941,15 @@
         fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
+
+            // Check API Key
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                alert('⚠️ API Key belum dikonfigurasi!\n\nSilakan klik tombol "API Config" di header untuk mengatur API Key terlebih dahulu.');
+                fileInput.value = '';
+                openApiModal();
+                return;
+            }
 
             // Reset UI
             idleUi.classList.add('hidden');
@@ -875,7 +1033,7 @@ TUGAS AUDIT KOMPREHENSIF:
    
 4. GENERATE JUDUL PROFESIONAL (3 opsi):
    - Gunakan format: Kata-Kunci-Spesifik-Tahun
-   - Hindari kata umum, gunakan istilasi teknis
+   - Hindari kata umum, gunakan istilah teknis
    - Contoh: "SK-Tim-ZI-2024", "Notulen-Rapat-Komitmen-Anti-Korupsi", "Laporan-IKM-Triwulan-I"
 
 5. CATATAN AUDITOR:
@@ -903,8 +1061,9 @@ RESPONSE FORMAT (JSON):
 
 Lakukan audit mendalam dan profesional!`;
 
-                    // Call Gemini API
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY}`, {
+                    // Call Gemini API with better error handling
+                    console.log('Calling Gemini API...');
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -923,9 +1082,26 @@ Lakukan audit mendalam dan profesional!`;
                         })
                     });
 
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('API Error:', errorData);
+                        throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
+                    }
+
                     const data = await response.json();
+                    console.log('API Response:', data);
+
+                    if (!data.candidates || !data.candidates[0]) {
+                        throw new Error('No response from AI');
+                    }
+
                     const resultText = data.candidates[0].content.parts[0].text;
                     const jsonMatch = resultText.match(/\{[\s\S]*\}/);
+                    
+                    if (!jsonMatch) {
+                        throw new Error('Invalid JSON response from AI');
+                    }
+
                     const result = JSON.parse(jsonMatch[0]);
 
                     // Update grade score
@@ -1022,16 +1198,25 @@ Lakukan audit mendalam dan profesional!`;
                 } catch (err) {
                     console.error('Audit Error:', err);
                     aiLoading.innerHTML = `
-                        <div class="text-center">
-                            <i data-lucide="x-circle" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
+                        <div class="text-center p-6">
+                            <i data-lucide="x-circle" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
                             <p class="text-sm font-bold text-red-600 mb-2">Audit Gagal</p>
-                            <p class="text-xs text-slate-500">Periksa API Key atau koneksi internet</p>
+                            <p class="text-xs text-slate-600 mb-4">${err.message}</p>
+                            <div class="space-y-2 text-[10px] text-slate-500 text-left bg-slate-50 p-4 rounded-lg">
+                                <p class="font-bold">Kemungkinan penyebab:</p>
+                                <ul class="list-disc ml-4 space-y-1">
+                                    <li>API Key tidak valid atau expired</li>
+                                    <li>Koneksi internet bermasalah</li>
+                                    <li>Kuota API habis (gratis: 15 req/menit)</li>
+                                    <li>File terlalu besar atau format tidak didukung</li>
+                                </ul>
+                            </div>
+                            <button onclick="openApiModal()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg text-xs font-bold hover:bg-blue-700">
+                                Cek API Config
+                            </button>
                         </div>
                     `;
                     lucide.createIcons();
-                    setTimeout(() => {
-                        aiLoading.classList.add('hidden');
-                    }, 3000);
                 }
             };
         });
@@ -1050,19 +1235,22 @@ Lakukan audit mendalam dan profesional!`;
             copyArea.value = outputName.innerText;
             copyArea.select();
             document.execCommand('copy');
-            
-            const toast = document.getElementById('toast');
-            toast.classList.add('opacity-100', '-translate-y-2');
-            lucide.createIcons();
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', '-translate-y-2');
-            }, 2500);
+            showToast('✓ Berhasil Disalin ke Clipboard');
         }
 
         // Initialize
         updateOutput();
+        updateApiStatus();
         lucide.createIcons();
+
+        // Check API key on load
+        if (!getApiKey()) {
+            setTimeout(() => {
+                if (confirm('API Key belum dikonfigurasi.\n\nApakah Anda ingin mengaturnya sekarang?')) {
+                    openApiModal();
+                }
+            }, 1000);
+        }
     </script>
 </body>
     </html>
-
